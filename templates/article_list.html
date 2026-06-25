@@ -1,29 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-  {% for article in article_list %}
-  <div class="card mb-3">
-    <div class="card-header">
-      <a href="{% url 'article_detail' article.pk %}">
-        <strong>{{ article.title }}</strong>
-      </a>
-      <small class="text-muted">
-        · by {{ article.author }} | {{ article.date }}
-      </small>
-    </div>
-    <div class="card-body">
-      <p class="card-text">{{ article.body }}</p>
-    </div>
-
-    {% if article.author == request.user %}
-    <div class="card-footer text-end">
-      <a href="{% url 'article_edit' article.pk %}">Edit</a>
-      <a href="{% url 'article_delete' article.pk %}" class="ms-2 text-danger">Delete</a>
-    </div>
-    {% endif %}
-
+{% for article in object_list %}
+<div class="card mb-3">
+  <div class="card-header bg-light">
+    <a href="{{ article.get_absolute_url }}"><strong>{{ article.title }}</strong></a>
+    · by {{ article.author }} | {{ article.date }}
   </div>
-  {% endfor %}
+  <div class="card-body">
+    <p class="card-text mb-0">{{ article.body }}</p>
+  </div>
+  {% if article.author == request.user %}
+  <div class="card-footer text-end">
+    <a href="{% url 'article_edit' article.pk %}">Edit</a>
+    <a href="{% url 'article_delete' article.pk %}" class="ms-2">Delete</a>
+  </div>
+  {% endif %}
 </div>
+{% endfor %}
 {% endblock content %}
